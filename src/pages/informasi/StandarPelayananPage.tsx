@@ -1,265 +1,275 @@
+"use client";
+
 import { useState } from "react";
-import { Download, FileText, Clock, RefreshCw, FileCheck } from "lucide-react";
-import type { BadgeItem, StandardItem, UnitKey } from "../../types";
+import { Link } from "react-router-dom";
 import {
-  dasarHukumStandarPelayananItems,
-  UnitsItems,
-} from "../../data/mockData";
+  ChevronRight,
+  Sparkles,
+  Scale,
+  FileText,
+  Clock,
+  Download,
+  ShieldCheck,
+} from "lucide-react";
+import { dasarHukumStandarPelayananItems, UnitsItems } from "../../data/mockData";
+import { HOSPITAL } from "../../libs/hospital-data";
+import { Button } from "#components/ui/button.tsx";
 
-const BADGE_STYLES: Record<
-  BadgeItem["variant"],
-  { bg: string; color: string }
-> = {
-  teal: { bg: "#E1F5EE", color: "#0F6E56" },
-  blue: { bg: "#E6F1FB", color: "#185FA5" },
-  amber: { bg: "#FAEEDA", color: "#854F0B" },
-  purple: { bg: "#EEEDFE", color: "#534AB7" },
-  red: { bg: "#FCEBEB", color: "#A32D2D" },
-};
+export default function StandarPelayananPage() {
+  // State untuk Tab Unit Aktif
+  const [activeUnitKey, setActiveUnitKey] = useState<string>(UnitsItems[0].key);
 
-const FILTER_KEYS: UnitKey[] = [
-  "Semua unit",
-  "Rawat Jalan",
-  "IGD",
-  "Rawat Inap",
-  "Laboratorium",
-  "Farmasi",
-  "Radiologi",
-];
+  // Cari unit item berdasarkan key
+  const activeUnit = UnitsItems.find((u) => u.key === activeUnitKey) || UnitsItems[0];
 
-function BadgePill({ badge }: { badge: BadgeItem }) {
-  const style = BADGE_STYLES[badge.variant];
-  return (
-    <span
-      className="text-[11px] px-2.5 py-0.5 rounded-full font-medium"
-      style={{ background: style.bg, color: style.color }}
-    >
-      {badge.label}
-    </span>
-  );
-}
+  // Helper untuk menentukan gaya badge waktu
+  const getWaktuVariantStyles = (variant: string) => {
+    switch (variant) {
+      case "red":
+        return "bg-rose-500/10 text-rose-700 dark:bg-rose-500/20 dark:text-rose-400 border-rose-500/30";
+      case "amber":
+        return "bg-amber-500/10 text-amber-700 dark:bg-amber-500/20 dark:text-amber-400 border-amber-500/30";
+      case "blue":
+        return "bg-blue-500/10 text-blue-700 dark:bg-blue-500/20 dark:text-blue-400 border-blue-500/30";
+      case "teal":
+      default:
+        return "bg-teal-500/10 text-teal-700 dark:bg-teal-500/20 dark:text-teal-400 border-teal-500/30";
+    }
+  };
 
-function WaktuPill({
-  label,
-  variant,
-}: {
-  label: string;
-  variant: StandardItem["waktuVariant"];
-}) {
-  const style = BADGE_STYLES[variant];
-  return (
-    <span
-      className="inline-flex items-center gap-1 text-[11px] font-semibold rounded-full px-2.5 py-1"
-      style={{ background: style.bg, color: style.color }}
-    >
-      <Clock size={10} />
-      {label}
-    </span>
-  );
-}
-
-function StandarCard({ item }: { item: StandardItem }) {
-  return (
-    <div className="rounded-2xl border border-border bg-card p-4 grid sm:grid-cols-[1fr_auto] gap-4 items-start">
-      <div>
-        <h3 className="text-sm font-semibold text-foreground mb-1.5">
-          {item.title}
-        </h3>
-        <p className="text-xs text-muted-foreground leading-relaxed">
-          {item.description}
-        </p>
-        <div className="flex flex-wrap gap-1.5 mt-3">
-          {item.badges.map((b) => (
-            <BadgePill key={b.label} badge={b} />
-          ))}
-        </div>
-      </div>
-      <div className="flex flex-col items-end gap-2 shrink-0">
-        <WaktuPill label={item.waktu} variant={item.waktuVariant} />
-        <a
-          href={item.pdfHref}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-flex items-center gap-1.5 text-[11px] font-semibold rounded-lg px-2.5 py-1.5 transition-colors"
-          style={{
-            background: "#E1F5EE",
-            color: "#0F6E56",
-            border: "0.5px solid #9FE1CB",
-          }}
-        >
-          <Download size={11} />
-          PDF
-        </a>
-      </div>
-    </div>
-  );
-}
-
-const StandarPelayananPage = () => {
-  const [activeFilter, setActiveFilter] = useState<UnitKey>("Semua unit");
-
-  const visibleUnits =
-    activeFilter === "Semua unit"
-      ? UnitsItems
-      : UnitsItems.filter((u) => u.key === activeFilter);
+  // Helper untuk menentukan gaya badge fitur
+  const getBadgeVariantStyles = (variant: string) => {
+    switch (variant) {
+      case "red":
+        return "bg-rose-500/10 text-rose-600";
+      case "amber":
+        return "bg-amber-500/10 text-amber-600";
+      case "blue":
+        return "bg-blue-500/10 text-blue-600";
+      case "purple":
+        return "bg-purple-500/10 text-purple-600";
+      case "teal":
+      default:
+        return "bg-teal-500/10 text-teal-600";
+    }
+  };
 
   return (
-    <div className="px-4 sm:px-10 lg:px-24 xl:px-40 py-10 space-y-8">
-      {/* Hero */}
-      <section
-        className="relative rounded-3xl overflow-hidden p-10 md:p-14"
-        style={{ background: "#064E5C" }}
-      >
-        <div
-          className="absolute rounded-full pointer-events-none"
-          style={{
-            width: 300,
-            height: 300,
-            right: -70,
-            top: -90,
-            background: "rgba(255,255,255,.06)",
-          }}
-        />
-        <div
-          className="absolute rounded-full pointer-events-none"
-          style={{
-            width: 150,
-            height: 150,
-            right: 250,
-            bottom: -55,
-            background: "rgba(255,255,255,.04)",
-          }}
-        />
+    <div className="min-h-screen bg-background">
+      {/* ------------------------------------------------------------- */}
+      {/* 1. HERO HEADER                                                */}
+      {/* ------------------------------------------------------------- */}
+      <section className="relative overflow-hidden border-b border-border/60 bg-linear-to-b from-primary/5 via-background to-background py-14 lg:py-20">
+        <div className="absolute -top-20 -right-20 h-80 w-80 rounded-full bg-primary/10 blur-3xl pointer-events-none" />
+        <div className="absolute -bottom-20 -left-20 h-80 w-80 rounded-full bg-secondary/10 blur-3xl pointer-events-none" />
 
-        <div className="relative z-10 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-8">
-          <div>
-            <p className="text-[11px] tracking-widest uppercase text-white/45 font-medium mb-2">
-              RSUD Karawang · Informasi
-            </p>
-            <h1 className="text-2xl md:text-3xl font-extrabold text-white leading-snug mb-3">
-              Standar <span className="text-cyan-300">pelayanan</span>
-              <br />
-              RSUD Karawang
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="max-w-3xl">
+            {/* Breadcrumb */}
+            <nav className="mb-4 flex items-center gap-2 text-xs font-medium text-muted-foreground">
+              <Link to="/" className="transition-colors hover:text-primary">
+                Beranda
+              </Link>
+              <ChevronRight className="h-3.5 w-3.5" />
+              <span className="font-semibold text-foreground">
+                Standar Pelayanan
+              </span>
+            </nav>
+
+            <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-xs font-semibold text-primary">
+              <Sparkles className="h-3.5 w-3.5" />
+              <span>Pedoman Operasional Layanan Publik</span>
+            </div>
+
+            <h1 className="mt-4 text-3xl font-extrabold tracking-tight text-foreground sm:text-4xl lg:text-5xl">
+              Standar Pelayanan
             </h1>
-            <p className="text-sm text-white/60 leading-relaxed max-w-md">
-              Dokumen standar pelayanan publik sesuai UU No. 25 Tahun 2009 dan
-              Permenpan RB No. 15 Tahun 2014, mencakup persyaratan, prosedur,
-              waktu, dan biaya layanan.
+
+            <p className="mt-4 text-base leading-relaxed text-muted-foreground sm:text-lg">
+              Tolok ukur pedoman penyelenggaraan pelayanan dan acuan penilaian kualitas layanan sebagai komitmen {HOSPITAL.name} kepada masyarakat.
             </p>
           </div>
+        </div>
+      </section>
 
-          <div className="flex flex-col gap-2.5 shrink-0">
-            {[
-              { icon: <FileCheck size={15} />, text: "UU No. 25/2009" },
-              { icon: <FileCheck size={15} />, text: "Permenpan RB 15/2014" },
-              { icon: <RefreshCw size={15} />, text: "Diperbarui 2025" },
-            ].map((p) => (
+      {/* ------------------------------------------------------------- */}
+      {/* 2. DASAR HUKUM SECTION                                        */}
+      {/* ------------------------------------------------------------- */}
+      <section className="py-12 border-b border-border/40">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center gap-2 mb-6">
+            <Scale className="h-5 w-5 text-primary" />
+            <h2 className="text-xl font-extrabold text-foreground">
+              Dasar Hukum & Landasan Regulasi
+            </h2>
+          </div>
+
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {dasarHukumStandarPelayananItems.map((item) => (
               <div
-                key={p.text}
-                className="flex items-center gap-2.5 rounded-xl px-4 py-2.5"
-                style={{
-                  background: "rgba(255,255,255,.10)",
-                  border: "0.5px solid rgba(255,255,255,.15)",
-                }}
+                key={item.title}
+                className="group relative overflow-hidden rounded-3xl border border-border/80 bg-card p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-primary/40 hover:shadow-md"
               >
-                <span className="text-white/60">{p.icon}</span>
-                <span className="text-xs font-medium text-white/80 whitespace-nowrap">
-                  {p.text}
-                </span>
+                <div
+                  className="inline-flex rounded-xl px-3 py-1 text-xs font-extrabold text-white mb-3"
+                  style={{ backgroundColor: item.color }}
+                >
+                  {item.title}
+                </div>
+                <p className="text-xs font-medium leading-relaxed text-muted-foreground">
+                  {item.desc}
+                </p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Filter */}
-      <div className="flex flex-wrap gap-2">
-        {FILTER_KEYS.map((key) => (
-          <button
-            key={key}
-            onClick={() => setActiveFilter(key)}
-            className={`text-xs rounded-full px-4 py-1.5 border transition-colors ${
-              activeFilter === key
-                ? "bg-teal-50 text-teal-800 border-teal-200 font-semibold"
-                : "bg-background text-muted-foreground border-border hover:bg-accent"
-            }`}
-          >
-            {key}
-          </button>
-        ))}
-      </div>
+      {/* ------------------------------------------------------------- */}
+      {/* 3. UNITS INTERACTIVE TABS & SERVICE ITEMS                      */}
+      {/* ------------------------------------------------------------- */}
+      <section className="py-12">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          
+          {/* Unit Tabs Navigation */}
+          <div className="flex items-center gap-2 overflow-x-auto pb-4 scrollbar-none">
+            {UnitsItems.map((unit) => {
+              const isActive = activeUnitKey === unit.key;
+              return (
+                <button
+                  key={unit.key}
+                  onClick={() => setActiveUnitKey(unit.key)}
+                  className={`flex shrink-0 items-center gap-2.5 rounded-2xl px-4 py-3 text-xs font-extrabold transition-all ${
+                    isActive
+                      ? "bg-primary text-primary-foreground shadow-lg shadow-primary/20 scale-[1.02]"
+                      : "bg-card border border-border/80 text-muted-foreground hover:bg-accent hover:text-foreground"
+                  }`}
+                >
+                  <span
+                    className="flex h-7 w-7 items-center justify-center rounded-xl transition-colors"
+                    style={{
+                      backgroundColor: isActive ? "rgba(255,255,255,0.2)" : unit.iconBg,
+                      color: isActive ? "#ffffff" : unit.iconColor,
+                    }}
+                  >
+                    {unit.icon}
+                  </span>
+                  <span>{unit.label}</span>
+                </button>
+              );
+            })}
+          </div>
 
-      {/* Unit Section */}
-      <div className="space-y-8">
-        {visibleUnits.map((unit) => (
-          <section key={unit.key}>
-            <div className="flex items-center gap-3 mb-4">
+          {/* Active Unit Info Banner */}
+          <div className="mt-8 rounded-3xl border border-border/80 bg-card p-6 shadow-sm sm:p-8">
+            <div className="flex items-center gap-4">
               <div
-                className="w-9 h-9 rounded-xl flex items-center justify-center shrink-0"
-                style={{ background: unit.iconBg, color: unit.iconColor }}
+                className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl"
+                style={{ backgroundColor: activeUnit.iconBg, color: activeUnit.iconColor }}
               >
-                {unit.icon}
+                {activeUnit.icon}
               </div>
               <div>
-                <h2 className="text-sm font-semibold text-foreground">
-                  {unit.label}
+                <h2 className="text-xl font-extrabold text-foreground">
+                  {activeUnit.label}
                 </h2>
-                <p className="text-xs text-muted-foreground mt-0.5">
-                  {unit.sub}
+                <p className="text-xs font-medium text-muted-foreground">
+                  {activeUnit.sub}
                 </p>
               </div>
             </div>
-            <div className="space-y-2.5">
-              {unit.items.map((item) => (
-                <StandarCard key={item.title} item={item} />
+
+            {/* Items Grid for Active Unit */}
+            <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-2">
+              {activeUnit.items.map((srv) => (
+                <div
+                  key={srv.title}
+                  className="group relative flex flex-col justify-between overflow-hidden rounded-3xl border border-border/80 bg-background p-6 shadow-sm transition-all duration-300 hover:border-primary/40 hover:shadow-md"
+                >
+                  <div>
+                    {/* Item Title & Time Badge */}
+                    <div className="flex flex-wrap items-start justify-between gap-3">
+                      <h3 className="text-base font-extrabold text-foreground group-hover:text-primary transition-colors">
+                        {srv.title}
+                      </h3>
+
+                      <span
+                        className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-xs font-extrabold shrink-0 ${getWaktuVariantStyles(
+                          srv.waktuVariant
+                        )}`}
+                      >
+                        <Clock className="h-3.5 w-3.5" />
+                        {srv.waktu}
+                      </span>
+                    </div>
+
+                    <p className="mt-3 text-xs leading-relaxed text-muted-foreground">
+                      {srv.description}
+                    </p>
+
+                    {/* Badges */}
+                    <div className="mt-4 flex flex-wrap gap-2">
+                      {srv.badges.map((b) => (
+                        <span
+                          key={b.label}
+                          className={`rounded-xl px-2.5 py-1 text-[11px] font-extrabold ${getBadgeVariantStyles(
+                            b.variant
+                          )}`}
+                        >
+                          {b.label}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* PDF Download Footer */}
+                  <div className="mt-6 flex items-center justify-between border-t border-border/60 pt-4 text-xs">
+                    <span className="flex items-center gap-1 text-muted-foreground font-medium">
+                      <FileText className="h-3.5 w-3.5 text-primary" />
+                      Dokumen SOP Resmi
+                    </span>
+
+                    <Button
+                      asChild
+                      variant="ghost"
+                      size="sm"
+                      className="h-8 rounded-xl text-xs font-semibold text-primary hover:bg-primary/10"
+                    >
+                      <a href={srv.pdfHref} download target="_blank" rel="noopener noreferrer">
+                        <Download className="mr-1.5 h-3.5 w-3.5" />
+                        Unduh SK / SOP
+                      </a>
+                    </Button>
+                  </div>
+                </div>
               ))}
             </div>
-          </section>
-        ))}
-      </div>
+          </div>
 
-      {/* Dasar Hukum */}
-      <section>
-        <p className="text-[11px] tracking-widest uppercase text-muted-foreground font-medium mb-4">
-          Dasar hukum
-        </p>
-        <div className="grid sm:grid-cols-3 gap-3">
-          {dasarHukumStandarPelayananItems.map((d) => (
-            <div
-              key={d.title}
-              className="rounded-2xl border border-border bg-card p-4"
-            >
-              <FileText size={18} style={{ color: d.color }} className="mb-2" />
-              <div className="text-sm font-semibold text-foreground mb-1">
-                {d.title}
+          {/* Banner Integritas */}
+          <div className="mt-12 rounded-3xl border border-border/80 bg-card p-6 shadow-sm sm:p-8">
+            <div className="flex flex-col items-start justify-between gap-6 md:flex-row md:items-center">
+              <div className="space-y-2">
+                <div className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-3 py-1 text-xs font-bold text-primary">
+                  <ShieldCheck className="h-3.5 w-3.5" />
+                  <span>Jaminan Standar Mutu Pelayanan</span>
+                </div>
+                <h3 className="text-lg font-extrabold text-foreground sm:text-xl">
+                  Pelayanan Sesuai Prosedur & Bebas Pungli
+                </h3>
+                <p className="text-xs text-muted-foreground sm:text-sm">
+                  Apabila Anda mendapati pelayanan yang tidak sesuai dengan standar waktu di atas, silakan sampaikan keluhan Anda ke saluran pengaduan resmi.
+                </p>
               </div>
-              <div className="text-xs text-muted-foreground leading-relaxed">
-                {d.desc}
-              </div>
+
+              <Button asChild className="rounded-xl font-bold shadow-sm shrink-0">
+                <Link to="/maklumat-pelayanan">Lihat Maklumat Pelayanan</Link>
+              </Button>
             </div>
-          ))}
-        </div>
-      </section>
+          </div>
 
-      {/* Footer */}
-      <section className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-        <p className="text-xs text-muted-foreground flex items-center gap-1.5">
-          <RefreshCw size={13} />
-          Terakhir diperbarui: Januari 2025
-        </p>
-        <a
-          href="/standar-pelayanan/standar-pelayanan-rsud-karawang.pdf"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-flex items-center gap-2 rounded-2xl px-5 py-3 text-sm font-semibold text-white hover:opacity-90 transition"
-          style={{ background: "#064E5C" }}
-        >
-          <FileText size={15} />
-          Unduh semua standar (PDF)
-        </a>
+        </div>
       </section>
     </div>
   );
-};
-
-export default StandarPelayananPage;
+}

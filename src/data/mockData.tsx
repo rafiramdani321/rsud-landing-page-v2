@@ -74,7 +74,6 @@ export const navItems: NavGroup[] = [
     items: [
       { title: "Dokter Spesialis", href: "/pelayanan/dokter" },
       { title: "Jadwal Pelayanan", href: "/pelayanan/jadwal" },
-      { title: "Rawat Inap", href: "/pelayanan/rawat-inap" },
       { title: "Layanan Penunjang", href: "/pelayanan/penunjang" },
       { title: "Pendaftaran Online", href: "/pelayanan/pendaftaran" },
       { title: "Hak & Kewajiban Pasien", href: "/pelayanan/hak-kewajiban" },

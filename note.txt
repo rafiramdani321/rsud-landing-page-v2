@@ -3,3 +3,9 @@ reference UI/UX
 https://v0.app/rafiramdani321/chat/hospital-landing-page-kygWVzdBXnu
 https://skywork.ai/chat/019f8339-a23b-79e0-934f-57f4d5e0ad5f
 https://www.rocket.new/6a5f08c28940750014b7cb23#preview
+
+site header kurang responsive, hilangkan btn emengergeny atau link, 
+hilangkan 
+EN dan Broweser
+
+create detail page, 

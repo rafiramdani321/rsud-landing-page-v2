@@ -1,349 +1,276 @@
+"use client";
+
+import { Link } from "react-router-dom";
 import {
-  Hospital,
-  Eye,
+  ChevronRight,
+  Sparkles,
+  Award,
+  Users,
   Target,
-  Check,
-  Star,
-  Phone,
-  Mail,
-  MapPin,
-  Map,
+  Compass,
+  History,
   ShieldCheck,
-  Calendar,
-  NotebookText,
+  CheckCircle2,
 } from "lucide-react";
-import type { StatProfileItem } from "../../types";
-import {
-  nilaiProfileItems,
-  PimpinanProfileItems,
-  TimelineProfileItems,
-} from "../../data/mockData";
+import { HOSPITAL } from "../../libs/hospital-data";
+import { nilaiProfileItems, PimpinanProfileItems, TimelineProfileItems } from "../../data/mockData";
+import { Button } from "#components/ui/button.tsx";
 
-const STATS: StatProfileItem[] = [
-  { value: "450+", label: "Tempat tidur" },
-  { value: "28", label: "Spesialis & subspesialis" },
-  { value: "1.200+", label: "Tenaga kesehatan" },
-  { value: "24 jam", label: "Layanan IGD", highlight: true },
-];
-
-const MISI = [
-  "Meningkatkan mutu dan keselamatan pasien secara berkelanjutan",
-  "Menyediakan SDM kesehatan yang profesional dan berempati",
-  "Mengembangkan sarana prasarana berbasis teknologi terkini",
-  "Menyelenggarakan tata kelola rumah sakit yang transparan",
-  "Memperkuat kemitraan dengan faskes dan komunitas",
-];
-
-const HERO_BADGES = [
-  { icon: <NotebookText size={12} />, text: "Akreditasi Paripurna" },
-  { icon: <ShieldCheck size={12} />, text: "Terakreditasi KARS 2023" },
-  { icon: <Star size={12} />, text: "Kelas B" },
-  { icon: <Calendar size={12} />, text: "Berdiri sejak 1937" },
-];
-
-const ProfilePage = () => {
+export default function ProfilePage() {
   return (
-    <div className="px-4 sm:px-10 lg:px-24 xl:px-40 py-10 space-y-8">
-      {/* Hero */}
-      <section
-        className="relative rounded-3xl overflow-hidden flex flex-col justify-end p-10 md:p-14 min-h-55"
-        style={{ background: "#064E5C" }}
-      >
-        <div
-          className="absolute rounded-full pointer-events-none"
-          style={{
-            width: 300,
-            height: 300,
-            right: -80,
-            top: -100,
-            background: "rgba(255,255,255,.06)",
-          }}
-        />
-        <div
-          className="absolute rounded-full pointer-events-none"
-          style={{
-            width: 160,
-            height: 160,
-            left: 200,
-            bottom: -60,
-            background: "rgba(255,255,255,.04)",
-          }}
-        />
+    <div className="min-h-screen bg-background">
+      {/* ------------------------------------------------------------- */}
+      {/* 1. HERO HEADER                                                */}
+      {/* ------------------------------------------------------------- */}
+      <section className="relative overflow-hidden border-b border-border/60 bg-linear-to-b from-primary/5 via-background to-background py-14 lg:py-20">
+        <div className="absolute -top-20 -right-20 h-80 w-80 rounded-full bg-primary/10 blur-3xl pointer-events-none" />
+        <div className="absolute -bottom-20 -left-20 h-80 w-80 rounded-full bg-secondary/10 blur-3xl pointer-events-none" />
 
-        <div className="relative z-10 flex items-center gap-6 mb-5">
-          <div
-            className="w-16 h-16 rounded-2xl flex items-center justify-center shrink-0 text-white/80"
-            style={{
-              background: "rgba(255,255,255,.12)",
-              border: "0.5px solid rgba(255,255,255,.2)",
-            }}
-          >
-            <Hospital size={30} />
-          </div>
-          <div>
-            <p className="text-[11px] tracking-widest uppercase text-white/45 font-medium mb-1">
-              Profil Rumah Sakit
-            </p>
-            <h1 className="text-2xl font-extrabold text-white leading-snug">
-              Rumah Sakit Umum Daerah{" "}
-              <span className="text-cyan-300">Karawang</span>
-            </h1>
-            <p className="text-xs text-white/55 mt-0.5">
-              Jl. Galuh Mas No. 1, Kabupaten Karawang, Jawa Barat · Kelas B
-            </p>
-          </div>
-        </div>
-
-        {/* Badges */}
-        <div className="relative z-10 flex flex-wrap gap-2">
-          {HERO_BADGES.map((b) => (
-            <span
-              key={b.text}
-              className="inline-flex items-center gap-1.5 text-[11px] font-medium rounded-full px-3 py-1.5"
-              style={{
-                background: "rgba(255,255,255,.10)",
-                border: "0.5px solid rgba(255,255,255,.18)",
-                color: "rgba(255,255,255,.75)",
-              }}
-            >
-              {b.icon}
-              {b.text}
-            </span>
-          ))}
-        </div>
-      </section>
-
-      {/* Stats */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-        {STATS.map((s) => (
-          <div
-            key={s.label}
-            className="rounded-xl p-4 text-center"
-            style={{
-              background: s.highlight
-                ? "#E1F5EE"
-                : "var(--color-background-secondary)",
-            }}
-          >
-            <div
-              className="text-2xl font-semibold"
-              style={{
-                color: s.highlight ? "#0F6E56" : "var(--color-text-primary)",
-              }}
-            >
-              {s.value}
-            </div>
-            <div
-              className="text-xs mt-1 leading-snug"
-              style={{
-                color: s.highlight ? "#085041" : "var(--color-text-secondary)",
-              }}
-            >
-              {s.label}
-            </div>
-          </div>
-        ))}
-      </div>
-
-      {/* Visi Misi */}
-      <div className="grid lg:grid-cols-2 gap-4">
-        <div
-          className="rounded-2xl p-6 flex flex-col gap-4"
-          style={{ background: "#064E5C" }}
-        >
-          <div style={{ color: "#7FE8F0" }}>
-            <Eye size={24} />
-          </div>
-          <div>
-            <p
-              className="text-[11px] tracking-widest uppercase font-medium mb-2"
-              style={{ color: "rgba(255,255,255,.45)" }}
-            >
-              Visi
-            </p>
-            <h2 className="text-base font-semibold text-white leading-snug mb-3">
-              Menjadi rumah sakit rujukan regional yang unggul, mandiri, dan
-              berkeadilan
-            </h2>
-            <p
-              className="text-sm leading-relaxed"
-              style={{ color: "rgba(255,255,255,.6)" }}
-            >
-              Terwujud pada tahun 2028 dengan layanan berkualitas tinggi yang
-              dapat diakses oleh seluruh masyarakat Karawang dan sekitarnya.
-            </p>
-          </div>
-        </div>
-
-        <div className="rounded-2xl border border-border bg-card p-6 flex flex-col gap-4">
-          <div className="text-teal-600">
-            <Target size={24} />
-          </div>
-          <div>
-            <p className="text-[11px] tracking-widest uppercase font-medium text-teal-700 mb-2">
-              Misi
-            </p>
-            <h2 className="text-base font-semibold text-foreground leading-snug mb-4">
-              Lima pilar layanan unggulan kami
-            </h2>
-            <ul className="space-y-2.5">
-              {MISI.map((m) => (
-                <li
-                  key={m}
-                  className="flex items-start gap-2.5 text-sm text-muted-foreground leading-relaxed"
-                >
-                  <Check size={14} className="text-teal-600 shrink-0 mt-0.5" />
-                  {m}
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
-      </div>
-
-      {/* Nilai Utama */}
-      <section>
-        <p className="text-[11px] tracking-widest uppercase text-muted-foreground font-medium mb-4">
-          Nilai utama
-        </p>
-        <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-          {nilaiProfileItems.map((n) => (
-            <div
-              key={n.title}
-              className="rounded-2xl border border-border bg-card p-4"
-            >
-              <div className="mb-2" style={{ color: n.iconColor }}>
-                {n.icon}
-              </div>
-              <div className="text-sm font-semibold text-foreground mb-1">
-                {n.title}
-              </div>
-              <div className="text-xs text-muted-foreground leading-relaxed">
-                {n.desc}
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* Sejarah */}
-      <section className="rounded-2xl border border-border bg-card p-6">
-        <h2 className="text-sm font-semibold text-foreground mb-6">
-          Sejarah singkat
-        </h2>
-        <div className="flex flex-col">
-          {TimelineProfileItems.map((item) => (
-            <div
-              key={item.year}
-              className="grid grid-cols-[80px_1fr] gap-4 relative pb-5 last:pb-0"
-            >
-              {!item.isLast && (
-                <div
-                  className="absolute"
-                  style={{
-                    left: 37,
-                    top: 28,
-                    bottom: 0,
-                    width: 1,
-                    background: "var(--color-border-tertiary)",
-                  }}
-                />
-              )}
-
-              <div className="text-xs font-semibold text-teal-700 text-right pt-0.5">
-                {item.year}
-              </div>
-
-              <div className="relative pl-6">
-                <div
-                  className="absolute rounded-full"
-                  style={{
-                    left: 0,
-                    top: 4,
-                    width: 10,
-                    height: 10,
-                    background: item.isLast ? "#064E5C" : "#1D9E75",
-                    border: "2px solid var(--color-background-primary)",
-                  }}
-                />
-                <div className="text-sm font-semibold text-foreground mb-0.5">
-                  {item.event}
-                </div>
-                <div className="text-xs text-muted-foreground leading-relaxed">
-                  {item.desc}
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* Pimpinan */}
-      <section className="rounded-2xl border border-border bg-card p-6">
-        <h2 className="text-sm font-semibold text-foreground mb-4">
-          Pimpinan rumah sakit
-        </h2>
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-          {PimpinanProfileItems.map((p) => (
-            <div
-              key={p.initials}
-              className="rounded-xl p-4 text-center"
-              style={{ background: "var(--color-background-secondary)" }}
-            >
-              <div
-                className="w-12 h-12 rounded-full flex items-center justify-center text-sm font-semibold mx-auto mb-3"
-                style={{ background: p.avatarBg, color: p.avatarColor }}
-              >
-                {p.initials}
-              </div>
-              <div className="text-sm font-semibold text-foreground leading-snug">
-                {p.name}
-              </div>
-              <div className="text-xs text-muted-foreground mt-1">{p.role}</div>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* Kontak */}
-      <section
-        className="rounded-2xl p-6 md:p-8 grid sm:grid-cols-[1fr_auto] gap-6 items-center"
-        style={{ background: "#064E5C" }}
-      >
-        <div>
-          <h2 className="text-base font-semibold text-white mb-1">
-            Hubungi kami
-          </h2>
-          <p className="text-sm text-white/60">
-            Kami siap membantu pertanyaan dan kebutuhan Anda
-          </p>
-          <div className="flex flex-wrap gap-4 mt-4">
-            {[
-              { icon: <Phone size={13} />, text: "(0267) xxx-xxx" },
-              { icon: <Mail size={13} />, text: "info@rsudkarawang.id" },
-              { icon: <MapPin size={13} />, text: "Jl. Galuh Mas No. 1" },
-            ].map((k) => (
-              <span
-                key={k.text}
-                className="inline-flex items-center gap-1.5 text-xs"
-                style={{ color: "rgba(255,255,255,.7)" }}
-              >
-                <span style={{ color: "rgba(255,255,255,.45)" }}>{k.icon}</span>
-                {k.text}
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="max-w-3xl">
+            {/* Breadcrumb */}
+            <nav className="mb-4 flex items-center gap-2 text-xs font-medium text-muted-foreground">
+              <Link to="/" className="transition-colors hover:text-primary">
+                Beranda
+              </Link>
+              <ChevronRight className="h-3.5 w-3.5" />
+              <span className="font-semibold text-foreground">
+                Profil Rumah Sakit
               </span>
+            </nav>
+
+            <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-xs font-semibold text-primary">
+              <Sparkles className="h-3.5 w-3.5" />
+              <span>Tentang Kami</span>
+            </div>
+
+            <h1 className="mt-4 text-3xl font-extrabold tracking-tight text-foreground sm:text-4xl lg:text-5xl">
+              Profil {HOSPITAL.name}
+            </h1>
+
+            <p className="mt-4 text-base leading-relaxed text-muted-foreground sm:text-lg">
+              Pusat rujukan pelayanan kesehatan terdepan di Kabupaten Karawang yang berkomitmen memberikan layanan medis yang bermutu, aman, profesional, dan berorientasi pada kepuasan pasien.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* ------------------------------------------------------------- */}
+      {/* 2. VISI & MISI SECTION                                        */}
+      {/* ------------------------------------------------------------- */}
+      <section className="py-12 border-b border-border/40">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="grid gap-8 lg:grid-cols-2">
+            
+            {/* Card Visi */}
+            <div className="relative overflow-hidden rounded-3xl border border-primary/20 bg-linear-to-br from-primary/5 via-card to-card p-6 shadow-sm sm:p-8">
+              <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-primary/10 text-primary mb-6">
+                <Target className="h-6 w-6" />
+              </div>
+              <h2 className="text-xl font-extrabold text-foreground sm:text-2xl">
+                Visi
+              </h2>
+              <p className="mt-4 text-base font-medium leading-relaxed text-foreground/90">
+                "Menjadi Rumah Sakit Rujukan Utama yang Unggul, Modern, dan Terpercaya dalam Pelayanan Kesehatan bagi Masyarakat Karawang dan Sekitarnya."
+              </p>
+            </div>
+
+            {/* Card Misi */}
+            <div className="relative overflow-hidden rounded-3xl border border-border/80 bg-card p-6 shadow-sm sm:p-8">
+              <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-secondary/10 text-secondary mb-6">
+                <Compass className="h-6 w-6" />
+              </div>
+              <h2 className="text-xl font-extrabold text-foreground sm:text-2xl">
+                Misi
+              </h2>
+              <ul className="mt-4 space-y-3 text-xs sm:text-sm text-muted-foreground">
+                <li className="flex items-start gap-2.5">
+                  <CheckCircle2 className="h-4 w-4 text-primary shrink-0 mt-0.5" />
+                  <span>Menyelenggarakan pelayanan kesehatan paripurna yang bermutu tinggi dan mengutamakan keselamatan pasien.</span>
+                </li>
+                <li className="flex items-start gap-2.5">
+                  <CheckCircle2 className="h-4 w-4 text-primary shrink-0 mt-0.5" />
+                  <span>Meningkatkan kualitas sumber daya manusia medis dan non-medis secara berkelanjutan dan profesional.</span>
+                </li>
+                <li className="flex items-start gap-2.5">
+                  <CheckCircle2 className="h-4 w-4 text-primary shrink-0 mt-0.5" />
+                  <span>Mengembangkan sarana, prasarana, serta sarana teknologi kesehatan terkini.</span>
+                </li>
+                <li className="flex items-start gap-2.5">
+                  <CheckCircle2 className="h-4 w-4 text-primary shrink-0 mt-0.5" />
+                  <span>Mewujudkan tata kelola rumah sakit yang transparan, akuntabel, dan berintegritas tinggi.</span>
+                </li>
+              </ul>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      {/* ------------------------------------------------------------- */}
+      {/* 3. CORE VALUES / NILAI-NILAI ORGANISASI                      */}
+      {/* ------------------------------------------------------------- */}
+      <section className="py-12 border-b border-border/40 bg-muted/20">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="text-center max-w-2xl mx-auto mb-10">
+            <div className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-3 py-1 text-xs font-bold text-primary mb-3">
+              <Award className="h-3.5 w-3.5" />
+              <span>Budaya Organisasi</span>
+            </div>
+            <h2 className="text-2xl font-extrabold text-foreground sm:text-3xl">
+              Nilai-Nilai Utama Pelayanan
+            </h2>
+            <p className="mt-2 text-xs text-muted-foreground sm:text-sm">
+              Prinsip dan nilai dasar yang melandasi setiap insan tenaga medis dan staf {HOSPITAL.name} dalam bertugas.
+            </p>
+          </div>
+
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {nilaiProfileItems.map((item) => (
+              <div
+                key={item.title}
+                className="group relative overflow-hidden rounded-3xl border border-border/80 bg-card p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-primary/40 hover:shadow-md"
+              >
+                <div
+                  className="flex h-12 w-12 items-center justify-center rounded-2xl transition-transform duration-300 group-hover:scale-110"
+                  style={{
+                    backgroundColor: `${item.iconColor}15`,
+                    color: item.iconColor,
+                  }}
+                >
+                  {item.icon}
+                </div>
+
+                <h3 className="mt-5 text-lg font-extrabold text-foreground">
+                  {item.title}
+                </h3>
+
+                <p className="mt-2 text-xs leading-relaxed text-muted-foreground">
+                  {item.desc}
+                </p>
+              </div>
             ))}
           </div>
         </div>
-        <button
-          className="inline-flex items-center gap-2 rounded-xl px-5 py-2.5 text-sm font-semibold bg-white hover:bg-cyan-50 transition shrink-0"
-          style={{ color: "#064E5C" }}
-        >
-          <Map size={15} />
-          Lihat peta
-        </button>
+      </section>
+
+      {/* ------------------------------------------------------------- */}
+      {/* 4. JAJARAN PIMPINAN                                           */}
+      {/* ------------------------------------------------------------- */}
+      <section className="py-12 border-b border-border/40">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="text-center max-w-2xl mx-auto mb-10">
+            <div className="inline-flex items-center gap-2 rounded-full bg-secondary/10 px-3 py-1 text-xs font-bold text-secondary mb-3">
+              <Users className="h-3.5 w-3.5" />
+              <span>Manajemen & Direksi</span>
+            </div>
+            <h2 className="text-2xl font-extrabold text-foreground sm:text-3xl">
+              Jajaran Pimpinan
+            </h2>
+            <p className="mt-2 text-xs text-muted-foreground sm:text-sm">
+              Tim kepemimpinan berpengalaman yang mengarahkan visi dan mutu operasional rumah sakit.
+            </p>
+          </div>
+
+          <div className="grid gap-6 sm:grid-cols-3 max-w-4xl mx-auto">
+            {PimpinanProfileItems.map((leader) => (
+              <div
+                key={leader.role}
+                className="group relative flex flex-col items-center rounded-3xl border border-border/80 bg-card p-6 text-center shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-primary/40"
+              >
+                {/* Initial Avatar */}
+                <div
+                  className="flex h-20 w-20 items-center justify-center rounded-full text-xl font-black shadow-inner"
+                  style={{
+                    backgroundColor: leader.avatarBg,
+                    color: leader.avatarColor,
+                  }}
+                >
+                  {leader.initials}
+                </div>
+
+                <h3 className="mt-4 text-base font-extrabold text-foreground">
+                  {leader.name}
+                </h3>
+
+                <p className="mt-1 text-xs font-semibold text-primary">
+                  {leader.role}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ------------------------------------------------------------- */}
+      {/* 5. TIMELINE SEJARAH                                           */}
+      {/* ------------------------------------------------------------- */}
+      <section className="py-12 bg-muted/20">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="text-center max-w-2xl mx-auto mb-12">
+            <div className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-3 py-1 text-xs font-bold text-primary mb-3">
+              <History className="h-3.5 w-3.5" />
+              <span>Rekam Jejak Sejarah</span>
+            </div>
+            <h2 className="text-2xl font-extrabold text-foreground sm:text-3xl">
+              Perjalanan Kami
+            </h2>
+            <p className="mt-2 text-xs text-muted-foreground sm:text-sm">
+              Sejarah dan tonggak penting peningkatkan mutu pelayanan {HOSPITAL.name} dari masa ke masa.
+            </p>
+          </div>
+
+          {/* Timeline List */}
+          <div className="relative max-w-3xl mx-auto pl-6 sm:pl-8 border-l-2 border-primary/30 space-y-10">
+            {TimelineProfileItems.map((item) => (
+              <div key={item.year} className="relative group">
+                {/* Timeline Dot */}
+                <div className="absolute -left-7.75 sm:-left-9.75 top-1 flex h-6 w-6 items-center justify-center rounded-full border-2 border-primary bg-background group-hover:bg-primary transition-colors">
+                  <div className="h-2 w-2 rounded-full bg-primary group-hover:bg-background" />
+                </div>
+
+                {/* Timeline Content */}
+                <div className="rounded-3xl border border-border/80 bg-card p-6 shadow-sm transition-all group-hover:border-primary/40">
+                  <span className="inline-block rounded-xl bg-primary/10 px-3 py-1 text-xs font-black text-primary">
+                    Tahun {item.year}
+                  </span>
+
+                  <h3 className="mt-3 text-lg font-extrabold text-foreground">
+                    {item.event}
+                  </h3>
+
+                  <p className="mt-2 text-xs leading-relaxed text-muted-foreground sm:text-sm">
+                    {item.desc}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Bottom Banner */}
+          <div className="mt-16 rounded-3xl border border-border/80 bg-card p-6 shadow-sm sm:p-8">
+            <div className="flex flex-col items-start justify-between gap-6 md:flex-row md:items-center">
+              <div className="space-y-2">
+                <div className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-3 py-1 text-xs font-bold text-primary">
+                  <ShieldCheck className="h-3.5 w-3.5" />
+                  <span>Akreditasi Paripurna KARS</span>
+                </div>
+                <h3 className="text-lg font-extrabold text-foreground sm:text-xl">
+                  Siap Melayani Anda Sepenuh Hati
+                </h3>
+                <p className="text-xs text-muted-foreground sm:text-sm">
+                  Dapatkan informasi lebih lanjut mengenai jadwal dokter dan fasilitas pelayanan kami.
+                </p>
+              </div>
+
+              <Button asChild className="rounded-xl font-bold shadow-sm shrink-0">
+                <Link to="/jadwal-dokter">Lihat Jadwal Dokter</Link>
+              </Button>
+            </div>
+          </div>
+
+        </div>
       </section>
     </div>
   );
-};
-
-export default ProfilePage;
+}

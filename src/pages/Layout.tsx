@@ -1,8 +1,7 @@
-import Footer from "#components/common/Footer.tsx";
 import { TopBar } from "#components/common/Topbar.tsx";
 import { Outlet } from "react-router-dom";
-import { Hero } from "./home/sections/Hero";
 import { SiteHeader } from "#components/common/navbar/SiteHeader.tsx";
+import { SiteFooter } from "#components/common/SiteFooter.tsx";
 
 export const Layout = () => {
   return (
@@ -10,10 +9,9 @@ export const Layout = () => {
       <TopBar />
       <SiteHeader />
       <main>
-        <Hero />
         <Outlet />
       </main>
-      <Footer />
+      <SiteFooter />
     </div>
   );
 };

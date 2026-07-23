@@ -1,23 +1,25 @@
-import Dokter from "./sections/Dokter";
-import Artikel from "./sections/Artikel";
-import LayananPenunjang from "./sections/LayananPenunjang";
-import LayananSpesialis from "./sections/LayananSpesialis";
+import { BookingCta } from "./sections/BookingCTA";
+import { Careers } from "./sections/Careers";
+import { Doctors } from "./sections/Doctors";
+import { Faq } from "./sections/Faq";
+import { Hero } from "./sections/Hero";
+import { Inpatient } from "./sections/Inpatient";
+import { NewsBlog } from "./sections/NewsBlog";
 import { Polyclinics } from "./sections/Polyclinics";
+import { SupportServices } from "./sections/SupportService";
 
 const Home = () => {
   return (
     <>
+      <Hero />
       <Polyclinics />
-      {/* <div className="py-7">
-        <LayananPenunjang />
-        <div className="bg-primary/10">
-          <LayananSpesialis />
-        </div>
-        <Dokter />
-        <div className="bg-primary/10">
-          <Artikel />
-        </div>
-      </div> */}
+      <Doctors />
+      <Inpatient />
+      <SupportServices />
+      <NewsBlog />
+      <Careers />
+      <Faq />
+      <BookingCta />
     </>
   );
 };

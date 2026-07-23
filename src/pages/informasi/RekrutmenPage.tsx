@@ -1,324 +1,357 @@
-import React, { useState } from "react";
+"use client";
+
+import { useState, useMemo } from "react";
+import { Link } from "react-router-dom";
 import {
-  BriefcaseBusiness,
+  ChevronRight,
+  Briefcase,
   MapPin,
   Calendar,
-  ChevronRight,
-  Stethoscope,
-  FlaskConical,
-  Building2,
-  HeartPulse,
-  GraduationCap,
+  Clock,
+  Search,
+  Sparkles,
+  Building,
+  FileCheck,
+  AlertCircle,
+  X,
+  CheckCircle2,
   Send,
-  Check,
 } from "lucide-react";
-import HeroImage from "#/assets/rekrutmen/hero-image.jpg";
-import type { CategoryRecruitment, JobItem } from "../../types";
+import type { JobItem } from "../../types";
 import { JobItems } from "../../data/mockData";
+import { HOSPITAL } from "../../libs/hospital-data";
+import { Button } from "#components/ui/button.tsx";
 
-const CATEGORIES: { label: CategoryRecruitment; icon: React.ReactNode }[] = [
-  { label: "Semua", icon: <BriefcaseBusiness size={13} /> },
-  { label: "Tenaga Medis", icon: <Stethoscope size={13} /> },
-  { label: "Keperawatan", icon: <HeartPulse size={13} /> },
-  { label: "Laboratorium", icon: <FlaskConical size={13} /> },
-  { label: "Non Medis", icon: <Building2 size={13} /> },
-  { label: "Magang", icon: <GraduationCap size={13} /> },
-];
+const fieldClass =
+  "h-11 w-full rounded-xl border border-border/80 bg-background px-3.5 text-sm text-foreground placeholder:text-muted-foreground/70 outline-none transition-all duration-200 focus:border-primary focus:ring-2 focus:ring-primary/20";
 
-const STEPS = ["Lamaran", "Seleksi", "Tes", "Interview", "Pengumuman"];
+export default function RekrutmenPage() {
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("Semua");
+  const [selectedJob, setSelectedJob] = useState<JobItem | null>(null);
+  const [isApplied, setIsApplied] = useState(false);
 
-const CATEGORY_STYLES: Record<
-  Exclude<CategoryRecruitment, "Semua">,
-  { tag: string; placeholder: string; icon: React.ReactNode }
-> = {
-  "Tenaga Medis": {
-    tag: "bg-teal-50 text-teal-700",
-    placeholder: "from-teal-50 to-teal-200",
-    icon: <Stethoscope size={32} className="text-teal-600 opacity-50" />,
-  },
-  Keperawatan: {
-    tag: "bg-violet-50 text-violet-700",
-    placeholder: "from-violet-50 to-violet-200",
-    icon: <HeartPulse size={32} className="text-violet-600 opacity-50" />,
-  },
-  Laboratorium: {
-    tag: "bg-blue-50 text-blue-700",
-    placeholder: "from-blue-50 to-blue-200",
-    icon: <FlaskConical size={32} className="text-blue-600 opacity-50" />,
-  },
-  "Non Medis": {
-    tag: "bg-amber-50 text-amber-700",
-    placeholder: "from-amber-50 to-amber-200",
-    icon: <Building2 size={32} className="text-amber-600 opacity-50" />,
-  },
-  Magang: {
-    tag: "bg-pink-50 text-pink-700",
-    placeholder: "from-pink-50 to-pink-200",
-    icon: <GraduationCap size={32} className="text-pink-600 opacity-50" />,
-  },
-};
+  // Daftar kategori unik untuk filter chips
+  const categories = useMemo(() => {
+    const list = Array.from(new Set(JobItems.map((j) => j.category)));
+    return ["Semua", ...list];
+  }, []);
 
-function JobCard({ job }: { job: JobItem }) {
-  const style = CATEGORY_STYLES[job.category];
-  return (
-    <article className="rounded-2xl border border-border bg-card overflow-hidden hover:border-primary/40 hover:shadow-sm transition-all cursor-pointer group">
-      <div
-        className={`w-full h-24 bg-linear-to-br ${style.placeholder} flex items-center justify-center`}
-      >
-        {style.icon}
-      </div>
-      <div className="p-4">
-        <span
-          className={`inline-block text-[11px] font-medium px-2.5 py-0.5 rounded-full mb-3 ${style.tag}`}
-        >
-          {job.category}
-        </span>
-        <h3 className="font-semibold text-sm text-foreground mb-3 leading-snug">
-          {job.title}
-        </h3>
-        <div className="space-y-1.5 text-xs text-muted-foreground">
-          <div className="flex items-center gap-1.5">
-            <MapPin size={12} className="shrink-0" />
-            {job.location}
-          </div>
-          <div className="flex items-center gap-1.5">
-            <BriefcaseBusiness size={12} className="shrink-0" />
-            {job.type}
-          </div>
-        </div>
+  // Filter lowongan berdasarkan pencarian dan kategori
+  const filteredJobs = useMemo(() => {
+    return JobItems.filter((job) => {
+      const matchesCategory =
+        selectedCategory === "Semua" || job.category === selectedCategory;
 
-        <div
-          className={`inline-flex items-center gap-1 mt-3 text-[11px] font-medium px-2 py-0.5 rounded-full ${
-            job.deadlineSoon
-              ? "bg-amber-50 text-amber-700"
-              : "bg-emerald-50 text-emerald-700"
-          }`}
-        >
-          <Calendar size={10} />
-          Batas: {job.deadline}
-        </div>
+      const matchesSearch =
+        job.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        job.category.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        job.employmentType.toLowerCase().includes(searchQuery.toLowerCase());
 
-        <div className="flex items-center justify-between mt-3 pt-3 border-t border-border">
-          <span className="text-[11px] text-muted-foreground bg-muted rounded-full px-2 py-0.5">
-            {job.employmentType}
-          </span>
-          <button className="flex items-center gap-1 text-xs text-primary font-medium group-hover:underline">
-            Lihat detail
-            <ChevronRight size={13} />
-          </button>
-        </div>
-      </div>
-    </article>
-  );
-}
-
-const RekrutmenPage = () => {
-  const [activeCategory, setActiveCategory] =
-    useState<CategoryRecruitment>("Semua");
-
-  const filtered =
-    activeCategory === "Semua"
-      ? JobItems
-      : JobItems.filter((j) => j.category === activeCategory);
+      return matchesCategory && matchesSearch;
+    });
+  }, [searchQuery, selectedCategory]);
 
   return (
-    <div className="px-4 sm:px-10 lg:px-24 xl:px-40 py-10 space-y-8">
-      {/* Hero */}
-      <section className="relative rounded-2xl overflow-hidden min-h-65 flex items-end">
-        <img
-          src={HeroImage}
-          alt="RSUD Karawang"
-          className="absolute inset-0 w-full h-full object-cover object-center"
-          fetchPriority="high"
-          decoding="async"
-        />
-        <div
-          className="absolute inset-0"
-          style={{
-            background:
-              "linear-gradient(110deg, rgba(6,78,92,0.97) 0%, rgba(10,120,140,0.88) 38%, rgba(14,152,170,0.5) 65%, transparent 100%)",
-          }}
-        />
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <svg
-            viewBox="0 0 900 260"
-            preserveAspectRatio="none"
-            className="absolute inset-0 w-full h-full"
-            xmlns="http://www.w3.org/2000/svg"
-            aria-hidden="true"
-          >
-            <line
-              x1="380"
-              y1="-20"
-              x2="260"
-              y2="300"
-              stroke="rgba(255,255,255,0.07)"
-              strokeWidth="60"
-            />
-            <line
-              x1="440"
-              y1="-20"
-              x2="320"
-              y2="300"
-              stroke="rgba(255,255,255,0.04)"
-              strokeWidth="28"
-            />
-          </svg>
-        </div>
+    <div className="min-h-screen bg-background">
+      {/* ------------------------------------------------------------- */}
+      {/* 1. HERO HEADER                                                */}
+      {/* ------------------------------------------------------------- */}
+      <section className="relative overflow-hidden border-b border-border/60 bg-linear-to-b from-primary/5 via-background to-background py-14 lg:py-20">
+        <div className="absolute -top-20 -right-20 h-80 w-80 rounded-full bg-primary/10 blur-3xl pointer-events-none" />
+        <div className="absolute -bottom-20 -left-20 h-80 w-80 rounded-full bg-secondary/10 blur-3xl pointer-events-none" />
 
-        <div className="relative z-10 w-full flex flex-col lg:flex-row items-end lg:items-center justify-between gap-6 px-8 md:px-14 py-10">
-          <div>
-            <p className="text-[11px] tracking-widest uppercase text-white/50 font-medium mb-2">
-              RSUD Karawang · Rekrutmen
-            </p>
-            <h1 className="text-3xl font-extrabold text-white leading-tight mb-3">
-              Bergabung dan <span className="text-cyan-300">wujudkan</span>
-              <br />
-              layanan kesehatan terbaik
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="max-w-3xl">
+            {/* Breadcrumb */}
+            <nav className="mb-4 flex items-center gap-2 text-xs font-medium text-muted-foreground">
+              <Link to="/" className="transition-colors hover:text-primary">
+                Beranda
+              </Link>
+              <ChevronRight className="h-3.5 w-3.5" />
+              <span className="font-semibold text-foreground">
+                Rekrutmen & Karir
+              </span>
+            </nav>
+
+            <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-xs font-semibold text-primary">
+              <Sparkles className="h-3.5 w-3.5" />
+              <span>Bergabunglah Bersama Tim Kami</span>
+            </div>
+
+            <h1 className="mt-4 text-3xl font-extrabold tracking-tight text-foreground sm:text-4xl lg:text-5xl">
+              Peluang Karir RSUD Karawang
             </h1>
-            <p className="text-white/70 text-sm max-w-sm leading-relaxed mb-6">
-              Kami mencari tenaga kesehatan dan profesional non-medis yang
-              berdedikasi untuk melayani masyarakat Karawang.
+
+            <p className="mt-4 text-base text-muted-foreground sm:text-lg">
+              Mari bertumbuh dan memberikan pelayanan kesehatan bermutu tinggi untuk masyarakat bersama tenaga medis dan profesional terkemuka di {HOSPITAL.name}.
             </p>
-            <button className="inline-flex items-center gap-2 bg-white text-[#064E5C] rounded-xl px-5 py-2.5 text-sm font-semibold hover:bg-cyan-50 transition">
-              <BriefcaseBusiness size={15} />
-              Lihat semua lowongan
-            </button>
           </div>
 
-          <div className="flex lg:flex-col gap-3">
-            {[
-              { value: "25+", label: "Lowongan aktif" },
-              { value: "8", label: "Divisi kerja" },
-              { value: "120+", label: "Pegawai" },
-            ].map((s) => (
-              <div
-                key={s.label}
-                className="rounded-xl border border-white/20 bg-white/10 backdrop-blur-sm px-4 py-3 text-center min-w-25"
-              >
-                <div className="text-xl font-bold text-white">{s.value}</div>
-                <div className="text-[11px] text-white/60 mt-0.5">
-                  {s.label}
-                </div>
-              </div>
-            ))}
+          {/* Search Field */}
+          <div className="mt-8 max-w-md">
+            <div className="relative">
+              <Search className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="Cari posisi (misal: Dokter, Perawat, Administrasi)..."
+                className={`${fieldClass} pl-10 shadow-sm`}
+              />
+            </div>
           </div>
         </div>
       </section>
 
-      {/* Content */}
-      <section className="grid lg:grid-cols-[220px_1fr] gap-6">
-        <aside className="space-y-4">
-          <div className="rounded-2xl border border-border bg-card p-5">
-            <h3 className="text-sm font-semibold mb-4">Kategori</h3>
-            <div className="space-y-1">
-              {CATEGORIES.map(({ label, icon }) => (
-                <button
-                  key={label}
-                  onClick={() => setActiveCategory(label)}
-                  className={`w-full flex items-center gap-2 rounded-xl px-3 py-2 text-left text-sm transition-colors ${
-                    activeCategory === label
-                      ? "bg-teal-50 text-teal-700 font-medium"
-                      : "text-muted-foreground hover:bg-accent"
-                  }`}
-                >
-                  {icon}
-                  {label}
-                </button>
-              ))}
-            </div>
+      {/* ------------------------------------------------------------- */}
+      {/* 2. CATEGORY FILTERS & JOBS GRID                                */}
+      {/* ------------------------------------------------------------- */}
+      <section className="py-12">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          
+          {/* Category Chips Horizontal Filter */}
+          <div className="flex items-center gap-2 overflow-x-auto pb-4 scrollbar-none">
+            {categories.map((cat) => (
+              <button
+                key={cat}
+                onClick={() => setSelectedCategory(cat)}
+                className={`shrink-0 rounded-2xl px-4 py-2 text-xs font-extrabold transition-all ${
+                  selectedCategory === cat
+                    ? "bg-primary text-primary-foreground shadow-md shadow-primary/20"
+                    : "bg-card border border-border/80 text-muted-foreground hover:bg-accent hover:text-foreground"
+                }`}
+              >
+                {cat}
+              </button>
+            ))}
           </div>
 
-          <div className="rounded-2xl border border-border bg-card p-5">
-            <h3 className="text-sm font-semibold mb-3">Status deadline</h3>
-            <div className="space-y-2 text-sm text-muted-foreground">
-              <div className="flex items-center gap-2">
-                <span className="w-2 h-2 rounded-full bg-emerald-500 shrink-0" />
-                Masih dibuka
-              </div>
-              <div className="flex items-center gap-2">
-                <span className="w-2 h-2 rounded-full bg-amber-400 shrink-0" />
-                Segera berakhir
-              </div>
-            </div>
-          </div>
-        </aside>
-
-        <main>
-          <div className="flex items-center justify-between mb-5">
-            <h2 className="text-xl font-bold">Lowongan tersedia</h2>
-            <span className="text-sm text-muted-foreground bg-muted rounded-full px-3 py-1">
-              {filtered.length} posisi
-            </span>
+          {/* Results Info */}
+          <div className="mt-6 flex items-center justify-between">
+            <p className="text-xs font-medium text-muted-foreground">
+              Menampilkan <span className="font-bold text-foreground">{filteredJobs.length}</span> posisi tersedia
+            </p>
           </div>
 
-          {filtered.length > 0 ? (
-            <div className="grid sm:grid-cols-2 xl:grid-cols-2 2xl:grid-cols-3 gap-4">
-              {filtered.map((job) => (
-                <JobCard key={job.title} job={job} />
-              ))}
+          {/* Jobs List Grid */}
+          {filteredJobs.length === 0 ? (
+            <div className="mt-8 rounded-3xl border border-dashed border-border/80 bg-card/50 p-12 text-center">
+              <Briefcase className="mx-auto h-10 w-10 text-muted-foreground" />
+              <h3 className="mt-4 text-base font-bold text-foreground">
+                Lowongan Tidak Ditemukan
+              </h3>
+              <p className="mt-1 text-xs text-muted-foreground">
+                Tidak ada posisi yang cocok dengan kriteria pencarian "{searchQuery}".
+              </p>
+              <Button
+                variant="outline"
+                size="sm"
+                className="mt-4 rounded-xl text-xs font-semibold"
+                onClick={() => {
+                  setSearchQuery("");
+                  setSelectedCategory("Semua");
+                }}
+              >
+                Reset Filter
+              </Button>
             </div>
           ) : (
-            <div className="rounded-2xl border border-dashed border-border p-12 text-center text-muted-foreground text-sm">
-              Tidak ada lowongan untuk kategori ini saat ini.
+            <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-2">
+              {filteredJobs.map((job) => (
+                <div
+                  key={job.title}
+                  className="group relative flex flex-col justify-between overflow-hidden rounded-3xl border border-border/80 bg-card p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-primary/40 hover:shadow-xl hover:shadow-primary/5"
+                >
+                  <div>
+                    {/* Header Badges */}
+                    <div className="flex items-center justify-between gap-2">
+                      <span className="rounded-full bg-primary/10 px-3 py-1 text-xs font-extrabold text-primary">
+                        {job.category}
+                      </span>
+
+                      {job.deadlineSoon && (
+                        <span className="inline-flex items-center gap-1 rounded-full bg-rose-500/10 px-2.5 py-0.5 text-xs font-extrabold text-rose-600 dark:bg-rose-500/20 dark:text-rose-400">
+                          <Clock className="h-3 w-3" />
+                          Segera Ditutup
+                        </span>
+                      )}
+                    </div>
+
+                    {/* Job Title */}
+                    <h3 className="mt-4 text-xl font-extrabold text-foreground transition-colors group-hover:text-primary">
+                      {job.title}
+                    </h3>
+
+                    {/* Specs List */}
+                    <div className="mt-4 grid grid-cols-2 gap-2 rounded-2xl border border-border/60 bg-muted/30 p-3.5 text-xs">
+                      <div className="flex items-center gap-2 text-muted-foreground">
+                        <Building className="h-3.5 w-3.5 text-primary shrink-0" />
+                        <span className="font-semibold text-foreground">{job.employmentType}</span>
+                      </div>
+
+                      <div className="flex items-center gap-2 text-muted-foreground">
+                        <Briefcase className="h-3.5 w-3.5 text-primary shrink-0" />
+                        <span className="font-semibold text-foreground">{job.type}</span>
+                      </div>
+
+                      <div className="flex items-center gap-2 text-muted-foreground col-span-2">
+                        <MapPin className="h-3.5 w-3.5 text-secondary shrink-0" />
+                        <span className="font-medium">{job.location}</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Footer & Actions */}
+                  <div className="mt-6 flex items-center justify-between border-t border-border/60 pt-4 text-xs">
+                    <div className="flex items-center gap-1.5 text-muted-foreground">
+                      <Calendar className="h-3.5 w-3.5 text-amber-600" />
+                      <span>Batas: <strong className="text-foreground">{job.deadline}</strong></span>
+                    </div>
+
+                    <Button
+                      size="sm"
+                      className="rounded-xl text-xs font-bold shadow-sm"
+                      onClick={() => {
+                        setSelectedJob(job);
+                        setIsApplied(false);
+                      }}
+                    >
+                      Lamar Sekarang
+                    </Button>
+                  </div>
+                </div>
+              ))}
             </div>
           )}
-        </main>
-      </section>
 
-      {/* Bottom */}
-      <section className="grid lg:grid-cols-2 gap-5">
-        {/* Recruitment steps */}
-        <div className="rounded-2xl border border-border bg-card p-6">
-          <h3 className="font-bold text-base mb-6">Tahapan rekrutmen</h3>
-          <div className="flex justify-between items-start">
-            {STEPS.map((step, i) => (
-              <div
-                key={step}
-                className="flex flex-col items-center text-center flex-1 relative"
-              >
-                {i < STEPS.length - 1 && (
-                  <div className="absolute top-4 left-1/2 w-full h-px bg-border" />
-                )}
-                <div
-                  className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-semibold relative z-10 ${
-                    i === 0
-                      ? "bg-teal-600 text-white"
-                      : "bg-teal-50 text-teal-700 border border-teal-200"
-                  }`}
-                >
-                  {i === 0 ? <Check size={14} /> : i + 1}
+          {/* ------------------------------------------------------------- */}
+          {/* 3. RECRUITMENT INFO & DISCLAMER                               */}
+          {/* ------------------------------------------------------------- */}
+          <div className="mt-14 rounded-3xl border border-border/80 bg-card p-6 shadow-sm sm:p-8">
+            <div className="flex flex-col items-start justify-between gap-6 md:flex-row md:items-center">
+              <div className="space-y-2">
+                <div className="inline-flex items-center gap-2 rounded-full bg-amber-500/10 px-3 py-1 text-xs font-bold text-amber-600">
+                  <AlertCircle className="h-3.5 w-3.5" />
+                  <span>Peringatan Bebas Pungutan Biaya</span>
                 </div>
-                <span className="text-[11px] text-muted-foreground mt-2 leading-tight">
-                  {step}
-                </span>
+                <h3 className="text-lg font-extrabold text-foreground sm:text-xl">
+                  Proses Rekrutmen Bebas dari Biaya Apapun
+                </h3>
+                <p className="text-xs text-muted-foreground sm:text-sm">
+                  {HOSPITAL.name} tidak pernah memungut biaya atau bekerjasama dengan agen travel manapun selama proses seleksi pegawai.
+                </p>
               </div>
-            ))}
+            </div>
           </div>
-        </div>
 
-        {/* CTA card */}
-        <div
-          className="rounded-2xl p-6 flex flex-col justify-between"
-          style={{ background: "#064E5C" }}
-        >
-          <div>
-            <h3 className="font-bold text-base text-white">
-              Belum ada posisi yang cocok?
-            </h3>
-            <p className="mt-2 text-white/70 text-sm leading-relaxed">
-              Kirim CV Anda dan kami akan menghubungi jika ada kesempatan yang
-              relevan di masa mendatang.
-            </p>
-          </div>
-          <button className="mt-5 inline-flex items-center gap-2 bg-white text-[#064E5C] rounded-xl px-5 py-2.5 text-sm font-semibold hover:bg-cyan-50 transition w-fit">
-            <Send size={14} />
-            Kirim CV sekarang
-          </button>
         </div>
       </section>
+
+      {/* ------------------------------------------------------------- */}
+      {/* 4. APPLICATION MODAL                                         */}
+      {/* ------------------------------------------------------------- */}
+      {selectedJob && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm animate-in fade-in">
+          <div className="relative w-full max-w-lg overflow-hidden rounded-3xl border border-border bg-card p-6 shadow-2xl">
+            {/* Close Button */}
+            <button
+              onClick={() => setSelectedJob(null)}
+              className="absolute right-4 top-4 rounded-full p-2 text-muted-foreground hover:bg-muted hover:text-foreground"
+            >
+              <X className="h-5 w-5" />
+            </button>
+
+            {isApplied ? (
+              <div className="py-8 text-center space-y-4">
+                <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-emerald-500/10 text-emerald-600">
+                  <CheckCircle2 className="h-8 w-8" />
+                </div>
+                <h3 className="text-xl font-extrabold text-foreground">
+                  Lamaran Berhasil Terkirim!
+                </h3>
+                <p className="text-xs text-muted-foreground max-w-xs mx-auto">
+                  Terima kasih telah melamar posisi <strong>{selectedJob.title}</strong>. Tim SDM kami akan meninjau berkas Anda.
+                </p>
+                <Button
+                  className="rounded-xl font-bold text-xs mt-4"
+                  onClick={() => setSelectedJob(null)}
+                >
+                  Selesai
+                </Button>
+              </div>
+            ) : (
+              <div>
+                <div className="flex items-center gap-2">
+                  <span className="rounded-full bg-primary/10 px-2.5 py-0.5 text-xs font-extrabold text-primary">
+                    {selectedJob.category}
+                  </span>
+                  <span className="text-xs font-medium text-muted-foreground">
+                    {selectedJob.employmentType}
+                  </span>
+                </div>
+
+                <h2 className="mt-3 text-xl font-extrabold text-foreground">
+                  {selectedJob.title}
+                </h2>
+
+                {/* Job Summary */}
+                <div className="mt-4 space-y-2 rounded-2xl border border-border/60 bg-muted/30 p-3.5 text-xs">
+                  <div className="flex justify-between">
+                    <span className="text-muted-foreground">Lokasi Penempatan:</span>
+                    <span className="font-bold text-foreground">{selectedJob.location}</span>
+                  </div>
+                  <div className="flex justify-between border-t border-border/40 pt-2">
+                    <span className="text-muted-foreground">Tipe Kerja:</span>
+                    <span className="font-bold text-foreground">{selectedJob.type}</span>
+                  </div>
+                  <div className="flex justify-between border-t border-border/40 pt-2">
+                    <span className="text-muted-foreground">Batas Akhir:</span>
+                    <span className="font-bold text-amber-600">{selectedJob.deadline}</span>
+                  </div>
+                </div>
+
+                {/* General Requirements */}
+                <div className="mt-4 space-y-2 text-xs">
+                  <p className="font-bold text-foreground">Persyaratan Umum:</p>
+                  <ul className="space-y-1 text-muted-foreground">
+                    <li className="flex items-center gap-2">
+                      <FileCheck className="h-3.5 w-3.5 text-primary shrink-0" />
+                      <span>Warga Negara Indonesia (WNI)</span>
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <FileCheck className="h-3.5 w-3.5 text-primary shrink-0" />
+                      <span>Memiliki STR Aktif (Khusus Tenaga Medis/Kesehatan)</span>
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <FileCheck className="h-3.5 w-3.5 text-primary shrink-0" />
+                      <span>Pendidikan sesuai dengan kualifikasi jabatan</span>
+                    </li>
+                  </ul>
+                </div>
+
+                {/* Actions */}
+                <div className="mt-6 flex gap-3 border-t border-border/60 pt-4">
+                  <Button
+                    variant="outline"
+                    className="w-1/2 rounded-xl text-xs font-semibold"
+                    onClick={() => setSelectedJob(null)}
+                  >
+                    Batal
+                  </Button>
+                  <Button
+                    className="w-1/2 rounded-xl text-xs font-bold"
+                    onClick={() => setIsApplied(true)}
+                  >
+                    <Send className="mr-1.5 h-3.5 w-3.5" />
+                    Kirim Lamaran
+                  </Button>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
-};
-
-export default RekrutmenPage;
+}

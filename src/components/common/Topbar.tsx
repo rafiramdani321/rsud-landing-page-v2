@@ -3,7 +3,7 @@ import { Phone, MessageCircle, Globe } from "lucide-react";
 import { HOSPITAL } from "#/libs/hospital-data.ts";
 
 export function TopBar() {
-  const [lang, setLang] = useState<"ID" | "EN">("EN");
+  const [lang, setLang] = useState<"EN" | "ID">("ID");
 
   return (
     <div className="bg-primary text-primary-foreground">
@@ -20,8 +20,8 @@ export function TopBar() {
             </span>
             EMERGENCY 24/7
           </span>
-          <Phone className="h-4 w-4" aria-hidden="true" />
-          <span className="font-semibold tracking-wide group-hover:underline">
+          <Phone className="h-4 w-4 hidden" aria-hidden="true" />
+          <span className="font-semibold hidden tracking-wide group-hover:underline">
             {HOSPITAL.emergencyPhone}
           </span>
         </a>
@@ -42,7 +42,7 @@ export function TopBar() {
             aria-label="Language switcher"
           >
             <Globe className="h-4 w-4" aria-hidden="true" />
-            {(["ID", "EN"] as const).map((code) => (
+            {(["EN", "ID"] as const).map((code) => (
               <button
                 key={code}
                 type="button"

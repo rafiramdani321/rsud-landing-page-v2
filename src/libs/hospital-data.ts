@@ -9,6 +9,7 @@ import {
   Activity,
   type LucideIcon,
 } from "lucide-react";
+import type { NavGroup } from "../types";
 
 export const HOSPITAL = {
   name: "RSUD Karawang",
@@ -17,19 +18,48 @@ export const HOSPITAL = {
   emergencyPhoneHref: "tel:+622136374629",
   whatsapp: "+62 812 1000 2000",
   whatsappHref: "https://wa.me/6281210002000",
-  email: "care@sehatprima.co.id",
-  address: "Jl. Kesehatan Raya No. 1, Jakarta Selatan 12190, Indonesia",
+  email: "rsudkarawang@example.co.id",
+  address: "Jl. Galuh Mas Raya No.1, Sukaharja, Telukjambe Timur, Karawang, Jawa Barat 41361",
 };
 
-export const NAV_LINKS = [
-  { label: "Polyclinics", href: "#polyclinics" },
-  { label: "Doctors & Schedule", href: "#doctors" },
-  { label: "Inpatient Care", href: "#inpatient" },
-  { label: "Support Services", href: "#services" },
-  { label: "News", href: "#news" },
-  { label: "Careers", href: "#careers" },
-  { label: "FAQ", href: "#faq" },
-  { label: "Blog", href: "#news" },
+export const NAV_LINKS: NavGroup[] = [
+  {
+    label: "Pelayanan Pasien",
+    items: [
+      { title: "Dokter Spesialis", href: "/dokter" },
+      { title: "Jadwal Pelayanan", href: "/jadwal" },
+      { title: "Layanan Penunjang", href: "/penunjang" },
+      { title: "Pendaftaran Online", href: "/pendaftaran" },
+      { title: "Hak & Kewajiban Pasien", href: "/hak-kewajiban" },
+    ],
+  },
+  {
+    label: "Informasi",
+    items: [
+      { title: "Berita Terkini", href: "/berita" },
+      { title: "Pengumuman", href: "/pengumuman" },
+      { title: "Blog", href: "/blogs" },
+      { title: "Rekrutmen", href: "/rekrutmen" },
+      { title: "Maklumat Pelayanan", href: "/maklumat" },
+      {
+        title: "Index Kepuasan Masyarakat",
+        href: "/index-kepuasan",
+      },
+      { title: "Standar Pelayanan", href: "/standar-pelayanan" },
+    ],
+  },
+  {
+    label: "Tentang Kami",
+    items: [
+      { title: "Profile Rumah Sakit", href: "/profile" },
+      { title: "Fasilitas Rumah Sakit", href: "/fasilitas" },
+      { title: "Mitra Kami", href: "/mitra" },
+    ],
+  },
+  {
+    label: "FAQ",
+    href: "/faq",
+  },
 ];
 
 export type Poli = {
@@ -148,7 +178,7 @@ export const DOCTORS: Doctor[] = [
     department: "Cardiology",
     experience: "18+ Yrs Exp",
     bpjs: true,
-    photo: "/images/doctor-1.png",
+    photo: "src/assets/images/doctor-1.png",
     days: ["Mon", "Wed", "Fri"],
     schedule: [
       { day: "Monday", time: "09:00 – 13:00" },
@@ -163,7 +193,7 @@ export const DOCTORS: Doctor[] = [
     department: "Pediatrics",
     experience: "12+ Yrs Exp",
     bpjs: true,
-    photo: "/images/doctor-2.png",
+    photo: "src/assets/images/doctor-2.png",
     days: ["Mon", "Tue", "Thu", "Sat"],
     schedule: [
       { day: "Monday", time: "08:00 – 12:00" },
@@ -179,7 +209,7 @@ export const DOCTORS: Doctor[] = [
     department: "Internal Medicine",
     experience: "22+ Yrs Exp",
     bpjs: false,
-    photo: "/images/doctor-3.png",
+    photo: "src/assets/images/doctor-3.png",
     days: ["Tue", "Wed", "Fri"],
     schedule: [
       { day: "Tuesday", time: "10:00 – 14:00" },
@@ -194,7 +224,7 @@ export const DOCTORS: Doctor[] = [
     department: "Women's Health",
     experience: "10+ Yrs Exp",
     bpjs: true,
-    photo: "/images/doctor-4.png",
+    photo: "src/assets/images/doctor-4.png",
     days: ["Mon", "Thu", "Sat"],
     schedule: [
       { day: "Monday", time: "13:00 – 17:00" },
@@ -218,7 +248,7 @@ export const ROOMS: Room[] = [
     id: "vvip",
     name: "VVIP Suite",
     price: "Rp 3.500.000 / night",
-    image: "/images/room-vip.png",
+    image: "src/assets/images/room-vip.png",
     visiting: "10:00 – 20:00 (flexible)",
     facilities: [
       "AC",
@@ -234,7 +264,7 @@ export const ROOMS: Room[] = [
     id: "vip",
     name: "VIP Room",
     price: "Rp 2.200.000 / night",
-    image: "/images/room-vip.png",
+    image: "src/assets/images/room-vip.png",
     visiting: "11:00 – 13:00 & 17:00 – 20:00",
     facilities: [
       "AC",
@@ -249,7 +279,7 @@ export const ROOMS: Room[] = [
     id: "class-1",
     name: "Class 1",
     price: "Rp 950.000 / night",
-    image: "/images/room-standard.png",
+    image: "src/assets/images/room-standard.png",
     visiting: "11:00 – 13:00 & 17:00 – 19:00",
     facilities: ["AC", "TV", "WiFi", "Nurse Call", "2 Beds"],
   },
@@ -257,7 +287,7 @@ export const ROOMS: Room[] = [
     id: "class-2",
     name: "Class 2",
     price: "Rp 600.000 / night",
-    image: "/images/room-standard.png",
+    image: "src/assets/images/room-standard.png",
     visiting: "11:00 – 13:00 & 17:00 – 19:00",
     facilities: ["AC", "TV", "Nurse Call", "3 Beds"],
   },
@@ -265,7 +295,7 @@ export const ROOMS: Room[] = [
     id: "class-3",
     name: "Class 3",
     price: "Rp 350.000 / night",
-    image: "/images/room-standard.png",
+    image: "src/assets/images/room-standard.png",
     visiting: "11:00 – 13:00 & 17:00 – 19:00",
     facilities: ["AC", "Nurse Call", "4–6 Beds"],
   },
@@ -273,7 +303,7 @@ export const ROOMS: Room[] = [
     id: "icu",
     name: "ICU / ICCU",
     price: "Rp 4.000.000 / night",
-    image: "/images/room-icu.png",
+    image: "src/assets/images/room-icu.png",
     visiting: "Restricted: 11:00 – 12:00 & 18:00 – 19:00",
     facilities: [
       "24/7 Monitoring",
@@ -298,7 +328,7 @@ export const BLOG_POSTS: BlogPost[] = [
     title: "5 Everyday Habits to Keep Your Heart Healthy",
     category: "Cardiology",
     readTime: "4 min read",
-    image: "/images/blog-heart.png",
+    image: "src/assets/images/blog-heart.png",
     excerpt:
       "Simple, doctor-reviewed lifestyle changes that can significantly lower your risk of heart disease.",
   },
@@ -306,7 +336,7 @@ export const BLOG_POSTS: BlogPost[] = [
     title: "Building a Balanced Plate: A Nutrition Guide",
     category: "Nutrition",
     readTime: "6 min read",
-    image: "/images/blog-nutrition.png",
+    image: "src/assets/images/blog-nutrition.png",
     excerpt:
       "Our clinical nutritionists explain how to build meals that fuel your body and support recovery.",
   },
@@ -314,7 +344,7 @@ export const BLOG_POSTS: BlogPost[] = [
     title: "Your Child's Immunization Schedule Explained",
     category: "Pediatrics",
     readTime: "5 min read",
-    image: "/images/blog-children.png",
+    image: "src/assets/images/blog-children.png",
     excerpt:
       "A complete, reassuring guide to keeping your little ones protected from preventable diseases.",
   },
