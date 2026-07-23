@@ -55,9 +55,11 @@ function useCountUp(target: number, active: boolean, durationMs = 1200) {
     const prefersReduced = window.matchMedia(
       "(prefers-reduced-motion: reduce)",
     ).matches;
+
     if (prefersReduced) {
-      setValue(target);
-      return;
+      // Tunda ke microtask/frame berikutnya, bukan setState sinkron di badan effect.
+      const frame = requestAnimationFrame(() => setValue(target));
+      return () => cancelAnimationFrame(frame);
     }
 
     let frame: number;

@@ -157,9 +157,9 @@ export function Doctors() {
             >
               <div className="flex items-start gap-4">
                 <div className="relative h-20 w-20 shrink-0 overflow-hidden rounded-2xl bg-muted border border-border/60">
-                  {doc.image ? (
+                  {doc.photo ? (
                     <img
-                      src={doc.image}
+                      src={doc.photo}
                       alt={doc.name}
                       className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
                     />
@@ -187,7 +187,7 @@ export function Doctors() {
               <div className="mt-5 border-t border-border/60 pt-4 flex items-center justify-between">
                 <div className="text-xs text-muted-foreground">
                   <span className="block font-medium text-foreground">Hari Praktik:</span>
-                  <span className="truncate max-w-40 block">{doc.schedule || "Senin - Jumat"}</span>
+                  <span className="truncate max-w-40 block">{doc.days || "Senin - Jumat"}</span>
                 </div>
                 <Button asChild size="sm" className="rounded-xl px-4 text-xs font-semibold shadow-sm">
                   <a href="#book" className="flex items-center gap-1.5">
@@ -246,7 +246,7 @@ export function BookingSection() {
                 <PhoneCall className="h-6 w-6 shrink-0 text-primary" />
                 <div>
                   <p className="text-xs font-bold text-foreground">Butuh Bantuan Kendala Pendaftaran?</p>
-                  <p className="text-xs text-muted-foreground">Hubungi Call Center: {HOSPITAL.phone || "(0267) 123456"}</p>
+                  <p className="text-xs text-muted-foreground">Hubungi Call Center: {HOSPITAL.emergencyPhone || "(0267) 123456"}</p>
                 </div>
               </div>
             </div>

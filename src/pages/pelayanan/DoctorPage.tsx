@@ -548,14 +548,14 @@ export default function DoctorPage() {
 
             {/* Doctor Info Section */}
             <div className="mt-6 space-y-4 border-t border-border/60 pt-4 text-xs">
-              {selectedDoctor.education && (
+              {selectedDoctor.specialty && (
                 <div>
                   <h4 className="flex items-center gap-1.5 font-bold text-foreground">
                     <GraduationCap className="h-4 w-4 text-primary" />
                     <span>Pendidikan & Kualifikasi</span>
                   </h4>
                   <p className="mt-1 text-muted-foreground leading-relaxed">
-                    {selectedDoctor.education}
+                    {selectedDoctor.specialty}
                   </p>
                 </div>
               )}

@@ -222,9 +222,9 @@ export default function LayananPenunjangPage() {
                   asChild
                   className="rounded-xl bg-rose-600 text-white hover:bg-rose-700 font-bold shadow-md shadow-rose-600/20"
                 >
-                  <a href={`tel:${HOSPITAL.phone}`}>
+                  <a href={`tel:${HOSPITAL.emergencyPhoneHref}`}>
                     <PhoneCall className="mr-2 h-4 w-4" />
-                    Hubungi ({HOSPITAL.phone})
+                    Hubungi ({HOSPITAL.emergencyPhone})
                   </a>
                 </Button>
               </div>
