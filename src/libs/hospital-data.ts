@@ -1,3 +1,16 @@
+import doctor1 from "#/assets/images/doctor-1.png"
+import doctor2 from "#/assets/images/doctor-2.png"
+import doctor3 from "#/assets/images/doctor-3.png"
+import doctor4 from "#/assets/images/doctor-4.png"
+
+import roomVip from "#/assets/images/room-vip.png"
+import roomStandard from "#/assets/images/room-standard.png"
+import roomICU from "#/assets/images/room-icu.png"
+
+import blogHeart from "#/assets/images/blog-heart.png";
+import blogNutrition from "#/assets/images/blog-nutrition.png";
+import blogChildren from "#/assets/images/blog-children.png";
+
 import {
   Stethoscope,
   Baby,
@@ -178,7 +191,7 @@ export const DOCTORS: Doctor[] = [
     department: "Cardiology",
     experience: "18+ Yrs Exp",
     bpjs: true,
-    photo: "src/assets/images/doctor-1.png",
+    photo: doctor1,
     days: ["Mon", "Wed", "Fri"],
     schedule: [
       { day: "Monday", time: "09:00 – 13:00" },
@@ -193,7 +206,7 @@ export const DOCTORS: Doctor[] = [
     department: "Pediatrics",
     experience: "12+ Yrs Exp",
     bpjs: true,
-    photo: "src/assets/images/doctor-2.png",
+    photo: doctor2,
     days: ["Mon", "Tue", "Thu", "Sat"],
     schedule: [
       { day: "Monday", time: "08:00 – 12:00" },
@@ -209,7 +222,7 @@ export const DOCTORS: Doctor[] = [
     department: "Internal Medicine",
     experience: "22+ Yrs Exp",
     bpjs: false,
-    photo: "src/assets/images/doctor-3.png",
+    photo: doctor3,
     days: ["Tue", "Wed", "Fri"],
     schedule: [
       { day: "Tuesday", time: "10:00 – 14:00" },
@@ -224,7 +237,7 @@ export const DOCTORS: Doctor[] = [
     department: "Women's Health",
     experience: "10+ Yrs Exp",
     bpjs: true,
-    photo: "src/assets/images/doctor-4.png",
+    photo: doctor4,
     days: ["Mon", "Thu", "Sat"],
     schedule: [
       { day: "Monday", time: "13:00 – 17:00" },
@@ -248,7 +261,7 @@ export const ROOMS: Room[] = [
     id: "vvip",
     name: "VVIP Suite",
     price: "Rp 3.500.000 / night",
-    image: "src/assets/images/room-vip.png",
+    image: roomVip,
     visiting: "10:00 – 20:00 (flexible)",
     facilities: [
       "AC",
@@ -264,7 +277,7 @@ export const ROOMS: Room[] = [
     id: "vip",
     name: "VIP Room",
     price: "Rp 2.200.000 / night",
-    image: "src/assets/images/room-vip.png",
+    image: roomVip,
     visiting: "11:00 – 13:00 & 17:00 – 20:00",
     facilities: [
       "AC",
@@ -279,7 +292,7 @@ export const ROOMS: Room[] = [
     id: "class-1",
     name: "Class 1",
     price: "Rp 950.000 / night",
-    image: "src/assets/images/room-standard.png",
+    image: roomStandard,
     visiting: "11:00 – 13:00 & 17:00 – 19:00",
     facilities: ["AC", "TV", "WiFi", "Nurse Call", "2 Beds"],
   },
@@ -287,7 +300,7 @@ export const ROOMS: Room[] = [
     id: "class-2",
     name: "Class 2",
     price: "Rp 600.000 / night",
-    image: "src/assets/images/room-standard.png",
+    image: roomStandard,
     visiting: "11:00 – 13:00 & 17:00 – 19:00",
     facilities: ["AC", "TV", "Nurse Call", "3 Beds"],
   },
@@ -295,7 +308,7 @@ export const ROOMS: Room[] = [
     id: "class-3",
     name: "Class 3",
     price: "Rp 350.000 / night",
-    image: "src/assets/images/room-standard.png",
+    image: roomStandard,
     visiting: "11:00 – 13:00 & 17:00 – 19:00",
     facilities: ["AC", "Nurse Call", "4–6 Beds"],
   },
@@ -303,7 +316,7 @@ export const ROOMS: Room[] = [
     id: "icu",
     name: "ICU / ICCU",
     price: "Rp 4.000.000 / night",
-    image: "src/assets/images/room-icu.png",
+    image: roomICU,
     visiting: "Restricted: 11:00 – 12:00 & 18:00 – 19:00",
     facilities: [
       "24/7 Monitoring",
@@ -328,7 +341,7 @@ export const BLOG_POSTS: BlogPost[] = [
     title: "5 Everyday Habits to Keep Your Heart Healthy",
     category: "Cardiology",
     readTime: "4 min read",
-    image: "src/assets/images/blog-heart.png",
+    image: blogHeart,
     excerpt:
       "Simple, doctor-reviewed lifestyle changes that can significantly lower your risk of heart disease.",
   },
@@ -336,7 +349,7 @@ export const BLOG_POSTS: BlogPost[] = [
     title: "Building a Balanced Plate: A Nutrition Guide",
     category: "Nutrition",
     readTime: "6 min read",
-    image: "src/assets/images/blog-nutrition.png",
+    image: blogNutrition,
     excerpt:
       "Our clinical nutritionists explain how to build meals that fuel your body and support recovery.",
   },
@@ -344,7 +357,7 @@ export const BLOG_POSTS: BlogPost[] = [
     title: "Your Child's Immunization Schedule Explained",
     category: "Pediatrics",
     readTime: "5 min read",
-    image: "src/assets/images/blog-children.png",
+    image: blogChildren,
     excerpt:
       "A complete, reassuring guide to keeping your little ones protected from preventable diseases.",
   },

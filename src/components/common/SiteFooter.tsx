@@ -10,7 +10,7 @@ const ACCREDITATIONS = ["KARS Paripurna", "Mitra BPJS", "ISO 9001", "Prudential"
 const SOCIALS = [
   { src: "src/assets/icons/facebook.svg", label: "Facebook" },
   { src: "src/assets/icons/instagram.svg", label: "Instagram" },
-  { src: "src/assets/icons/x.svg", label: "X" },
+  { src: "src/assets/icons/x.svg", label: "X" },  
   { src: "src/assets/icons/youtube.svg", label: "YouTube" },
 ]
 

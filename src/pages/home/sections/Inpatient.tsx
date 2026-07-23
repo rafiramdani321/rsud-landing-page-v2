@@ -1,5 +1,3 @@
-"use client"
-
 import { useState } from "react"
 import { Check, Clock, ArrowRight } from "lucide-react"
 import { ROOMS } from "#/libs/hospital-data.ts"

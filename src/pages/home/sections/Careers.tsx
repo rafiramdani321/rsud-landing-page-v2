@@ -2,6 +2,7 @@
 
 import { Button } from "#/components/ui/button.tsx"
 import { Briefcase, Heart, GraduationCap, ArrowRight } from "lucide-react"
+import imageCareer from "#/assets/images/careers.png"
 
 const PERKS = [
   { icon: Heart, label: "Budaya kerja ramah & berorientasi pada pasien" },
@@ -65,7 +66,7 @@ export function Careers() {
           {/* Sisi Gambar (Presisi & Proporsional) */}
           <div className="relative min-h-70 w-full bg-muted md:min-h-full">
             <img
-              src="src/assets/images/careers.png"
+              src={imageCareer}
               alt="Tim tenaga medis rumah sakit berdiskusi bersama"
               className="absolute inset-0 h-full w-full object-cover"
             />
