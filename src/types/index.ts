@@ -1,6 +1,12 @@
 import type { LucideIcon } from "lucide-react";
 import type React from "react";
 
+export interface ApiEnvelope<T> {
+  success: boolean;
+  message: string;
+  data: T;
+}
+
 // =========== MOCK DATA TYPES ============
 
 export interface NavItem {

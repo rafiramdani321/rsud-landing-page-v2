@@ -1,14 +1,14 @@
-export interface NavItemPage {
+export interface NavItem {
   id: string;
   title: string;
   slug: string;
   status: "draft" | "published";
 }
 
-export interface NavTreeNode {
+export interface NavList {
   id: string;
   label: string;
   url: string | null;
-  page: NavItemPage | null;
-  children: NavTreeNode[];
+  page: NavItem | null;
+  children: NavList[];
 }

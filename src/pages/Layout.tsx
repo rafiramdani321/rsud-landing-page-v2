@@ -1,6 +1,6 @@
 import { TopBar } from "#components/common/Topbar.tsx";
 import { Outlet } from "react-router-dom";
-import { SiteHeader } from "#components/common/navbar/SiteHeader.tsx";
+import { SiteHeader } from "#components/common/SiteHeader.tsx";
 import { SiteFooter } from "#components/common/SiteFooter.tsx";
 
 export const Layout = () => {

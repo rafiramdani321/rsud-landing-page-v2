@@ -31,10 +31,10 @@ function App() {
           <Route path="penunjang" element={<LayananPenunjangPage />} />
           <Route path="pendaftaran" element={<PendaftaranOnlinePage />} />
           <Route path="hak-kewajiban" element={<HakDanKewajibanPage />} />
-          <Route path="berita" element={<BeritaDanPengumumanPage />} />
-          <Route path="pengumuman" element={<BeritaDanPengumumanPage />} />
+          <Route path="info" element={<BeritaDanPengumumanPage />} />
+          <Route path="info" element={<BeritaDanPengumumanPage />} />
 
-          <Route path="blogs" element={<BlogPage />} />
+          <Route path="blog" element={<BlogPage />} />
           <Route path="rekrutmen" element={<RekrutmenPage />} />
           <Route path="maklumat" element={<MaklumatPage />} />
           <Route path="index-kepuasan" element={<IndexKepuasanPage />} />
