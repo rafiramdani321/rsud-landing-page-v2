@@ -155,7 +155,7 @@ export function SiteHeader() {
           aria-label="Navigasi Seluler"
         >
           <div className="mx-auto flex max-w-7xl flex-col space-y-1">
-            {navItems?.map((item) => {
+            { navItems?.map((item) => {
               const isExpanded = expandedGroup === item.id;
               const isDropdown = item.children && item.children.length > 0;
 
@@ -180,16 +180,20 @@ export function SiteHeader() {
                     {/* Sub Menu */}
                     {isExpanded && (
                       <div className="ml-3 my-1 border-l-2 border-primary/20 pl-3 space-y-1">
-                        {item.children.map((subItem) => (
-                          <Link
-                            key={subItem.id}
-                            to={"/#"}
-                            onClick={() => setOpen(false)}
-                            className="block rounded-lg px-3 py-2 text-xs font-medium text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
-                          >
-                            {subItem.label}
-                          </Link>
-                        ))}
+                        {item.children.map((subItem) => {
+                          if(!subItem.url && !subItem.page?.slug) return null
+                          const targetUrl = subItem.url ? subItem.url : `/${subItem.page?.slug}`
+                          return (
+                            <Link
+                              key={subItem.id}
+                              to={targetUrl}
+                              onClick={() => setOpen(false)}
+                              className="block rounded-lg px-3 py-2 text-xs font-medium text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
+                            >
+                              {subItem.label}
+                            </Link>
+                          )
+                        })}
                       </div>
                     )}
                   </div>
